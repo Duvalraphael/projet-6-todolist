@@ -1,35 +1,115 @@
+<?php
+
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
+if(isset($_POST['tache'])) {
+    $depart = trim(filter_input(INPUT_POST, 'tache', FILTER_SANITIZE_STRING));
+
+    $document = file_get_contents("assets/json/todo.json", true);
+
+    $tableau = json_decode($document, true);
+
+    $html = html_entity_decode(json_encode($tableau));
+
+    $tableau[] = ["tache" => $depart];
+    
+    $codejson = json_encode($tableau,JSON_UNESCAPED_UNICODE);
+    $depart = fopen("assets/json/todo.json", "w");   
+    
+    fwrite($depart, $codejson);
+    fclose($depart);
+    }
+?>
 <!DOCTYPE html>
 <html lang="fr">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta http-equiv="X-UA-Compatible" content="ie=edge">
-        <!--Import Google Icon Font-->
-        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-        <!--Import materialize.css-->
-        <link type="text/css" rel="stylesheet" href="assets/materialize/css/materialize.min.css"  media="screen,projection"/>
-        <!--Let browser know website is optimized for mobile-->
-        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-        <title>To Do List</title>
-    </head>
-    <body>
-        <div class="container">
-            <div class="row">
-                <form class="col s12">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <!--Import Google Icon Font-->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!--Import materialize.css-->
+    <link type="text/css" rel="stylesheet" href="assets/materialize/css/materialize.min.css" media="screen,projection" />
+    <!--Let browser know website is optimized for mobile-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="assets/css/style.css">
+    <title>To Do List</title>
+</head>
+
+<body>
+    <main>
+        <div class="container-fluid">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-12 ml-3 p-0">
+                        <form class="col s12" method="post" action="#">
+                            <h4>A FAIRE</h4>
+                            <?php require("assets/php/contenu.php");?>
+                            <input type="submit" name="submit" value="Enregistrer">
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container-fluid">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-12 ml-3 p-0">
+                        <h4>ARCHIVE</h4>
+                        <p>
+                            <label>
+                                <input type="checkbox" class="filled-in" checked="checked" />
+                                <span class="archive">Payer la facture sibelga</span>
+                            </label>
+                        </p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-12 ml-1">
+                        <p>
+                            <label>
+                                <input type="checkbox" class="filled-in" checked="checked" />
+                                <span class="archive">Imiter le cri de Chewbaka</span>
+                            </label>
+                        </p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-12 ml-1">
+                        <p>
+                            <label>
+                                <input type="checkbox" class="filled-in" checked="checked" />
+                                <span class="archive">Imiter le cri de Chewbaka</span>
+                            </label>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <form class="col s12" method="post" action="#">
+            <div class="container">
+                <div class="row">
                     <div class="row">
                         <h3>Ajouter une tâche </h3>
                         <div class="input-field col s6">
-                            <input id="tache_input" type="text" class="validate">
+                            <input id="tache_input" type="text" class="validate" name="tache">
                             <label for="tache_input">la tâche à effectuer : </label>
                         </div>
+                        <input type="checkbox" name="contact_me_by_fax_only" value="1" style="display:none !important"
+                            tabindex="-1" autocomplete="off">
                     </div>
                     <button class="btn waves-effect waves-light" type="submit" name="Ajouter">Ajouter
                         <i class="material-icons right">add_circle</i>
                     </button>
-                </form>
+                </div>
             </div>
-        </div>
-        <!--JavaScript at end of body for optimized loading-->
-        <script type="text/javascript" src="assets/materialize/js/materialize.min.js"></script>
-    </body>
+        </form>
+    </main>
+    <!--JavaScript at end of body for optimized loading-->
+    <script type="text/javascript" src="assets/materialize/js/materialize.min.js"></script>
+</body>
+
 </html>
