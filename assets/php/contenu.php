@@ -5,7 +5,7 @@ if ($parsed_json) {
     foreach ($parsed_json as $value) {
         foreach ($value as $value2) {
             if (!empty(trim($value2))) {
-                echo ' <label><input type=checkbox class="filled-in"/> <span class="afaire">'. $value2 . '</span></label><br>';
+                $html1 .= ' <label><input type=checkbox class="filled-in"/> <span class="afaire">'. $value2 . '</span></label><br>';
             }
         }
     }
@@ -19,4 +19,11 @@ if (!empty($_REQUEST['contact_me_by_fax_only']) && (bool) $_REQUEST['contact_me_
 } else {
 
 }
+
+/*
+reste a verifier le statut du json et de lui dire si tu es false tu le met dans a faire(html1) 
+change le statut avec enregistrer 
+si tu es true tu le met dans archive(html2)
+ et ensuite le drag and drop et le ajax si le temps 
+*/
     ?>

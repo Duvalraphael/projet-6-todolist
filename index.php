@@ -5,21 +5,22 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
 if(isset($_POST['tache'])) {
-    $depart = trim(filter_input(INPUT_POST, 'tache', FILTER_SANITIZE_STRING));
+    $input = trim(filter_input(INPUT_POST, 'tache', FILTER_SANITIZE_STRING));// Recupére la tache inputé
 
-    $document = file_get_contents("assets/json/todo.json", true);
+    $document = file_get_contents("assets/json/todo.json", true);// Chemin pour acceder aux Json
 
-    $tableau = json_decode($document, true);
+    $table = json_decode($document, true);
 
-    $html = html_entity_decode(json_encode($tableau));
+    $html = html_entity_decode(json_encode($table));
 
-    $tableau[] = ["tache" => $depart];
+    $table[] = ["tache" => $input,"statut" => false];
     
-    $codejson = json_encode($tableau,JSON_UNESCAPED_UNICODE);
-    $depart = fopen("assets/json/todo.json", "w");   
+    $codejson = json_encode($table,JSON_UNESCAPED_UNICODE);
+    $input = fopen("assets/json/todo.json", "w");   
     
-    fwrite($depart, $codejson);
-    fclose($depart);
+
+    fwrite($input, $codejson);
+    fclose($input);
     }
 ?>
 <!DOCTYPE html>
@@ -47,7 +48,8 @@ if(isset($_POST['tache'])) {
                     <div class="col-12 col-sm-12 col-md-12 col-lg-12 ml-3 p-0">
                         <form class="col s12" method="post" action="#">
                             <h4>A FAIRE</h4>
-                            <?php require("assets/php/contenu.php");?>
+                            <?php require("assets/php/contenu.php");
+                            echo $html1 ?>
                             <input type="submit" name="submit" value="Enregistrer">
                         </form>
                     </div>
@@ -59,32 +61,8 @@ if(isset($_POST['tache'])) {
                 <div class="row">
                     <div class="col-12 col-sm-12 col-md-12 col-lg-12 ml-3 p-0">
                         <h4>ARCHIVE</h4>
-                        <p>
-                            <label>
-                                <input type="checkbox" class="filled-in" checked="checked" />
-                                <span class="archive">Payer la facture sibelga</span>
-                            </label>
-                        </p>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-12 col-sm-12 col-md-12 col-lg-12 ml-1">
-                        <p>
-                            <label>
-                                <input type="checkbox" class="filled-in" checked="checked" />
-                                <span class="archive">Imiter le cri de Chewbaka</span>
-                            </label>
-                        </p>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-12 col-sm-12 col-md-12 col-lg-12 ml-1">
-                        <p>
-                            <label>
-                                <input type="checkbox" class="filled-in" checked="checked" />
-                                <span class="archive">Imiter le cri de Chewbaka</span>
-                            </label>
-                        </p>
+                        <?php require("assets/php/contenu.php");
+                            echo $html2 ?>
                     </div>
                 </div>
             </div>
@@ -110,6 +88,7 @@ if(isset($_POST['tache'])) {
     </main>
     <!--JavaScript at end of body for optimized loading-->
     <script type="text/javascript" src="assets/materialize/js/materialize.min.js"></script>
+    <script type="text/javascript" src="assets/js/script.js"></script>
 </body>
 
 </html>
