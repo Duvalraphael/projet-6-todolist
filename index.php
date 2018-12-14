@@ -9,14 +9,14 @@ if(isset($_POST['tache'])) {
 
     $document = file_get_contents("assets/json/todo.json", true);// Chemin pour acceder aux Json
 
-    $table = json_decode($document, true);
+    $table = json_decode($document, true);// permet d'utiliser le PHP
 
     $html = html_entity_decode(json_encode($table));
 
-    $table[] = ["tache" => $input,"statut" => false];
+    $table[] = ["tache" => $input,"statut" => false];// transforme notre input en objet json
     
-    $codejson = json_encode($table,JSON_UNESCAPED_UNICODE);
-    $input = fopen("assets/json/todo.json", "w");   
+    $codejson = json_encode($table,JSON_UNESCAPED_UNICODE);// encode dans le fichier
+    $input = fopen("assets/json/todo.json", "w"); // permet d'ecrire dans le json  
     
 
     fwrite($input, $codejson);
@@ -50,7 +50,7 @@ if(isset($_POST['tache'])) {
                             <h4>A FAIRE</h4>
                             <?php require("assets/php/contenu.php");
                             echo $html1 ?>
-                            <input type="submit" name="submit" value="Enregistrer">
+                            <input type="submit" name="fin" value="Enregistrer">
                         </form>
                     </div>
                 </div>
