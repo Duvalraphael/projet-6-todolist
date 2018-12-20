@@ -1,8 +1,8 @@
 # projet-6-todolist
 
-##Statut
+## Statut
 Fini
 
-###Projet
+### Projet
 
 Faire un formulaire qui permet d'ajouter des taches et quand elles sont finies de les archiver.
