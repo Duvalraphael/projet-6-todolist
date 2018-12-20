@@ -4,24 +4,35 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
+$document = file_get_contents("assets/json/todo.json", true);// Chemin pour acceder aux Json
+
+$table = json_decode($document, true);// permet d'utiliser le PHP
+
 if(isset($_POST['tache'])) {
     $input = trim(filter_input(INPUT_POST, 'tache', FILTER_SANITIZE_STRING));// Recupére la tache inputé
 
-    $document = file_get_contents("assets/json/todo.json", true);// Chemin pour acceder aux Json
+    $html = html_entity_decode(json_encode($table));// convertit en code html le code json 
 
-    $table = json_decode($document, true);// permet d'utiliser le PHP
-
-    $html = html_entity_decode(json_encode($table));
-
-    $table[] = ["tache" => $input,"statut" => false];// transforme notre input en objet json
+    $table[] = ["count"=> count($table),"tache" => $input,"statut" => true];// transforme notre input en objet json
     
     $codejson = json_encode($table,JSON_UNESCAPED_UNICODE);// encode dans le fichier
-    $input = fopen("assets/json/todo.json", "w"); // permet d'ecrire dans le json  
+    $input = fopen("assets/json/todo.json", "w"); // ouvre le fichier 
     
 
-    fwrite($input, $codejson);
-    fclose($input);
+    fwrite($input, $codejson);//écrit dans le doc
+    fclose($input);// ferme le doc 
     }
+  // transforme un " a faire " en un " archive"  
+    if(isset($_POST['check'])) {
+        foreach ($_POST['check'] as $id) {
+            if ($table[$id]["statut"] == true) {
+                $table[$id]["statut"] = false;
+                $newJsonString = json_encode($table);
+                file_put_contents("assets/json/todo.json", $newJsonString);
+            }
+        }
+    };
+    
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -48,9 +59,11 @@ if(isset($_POST['tache'])) {
                     <div class="col-12 col-sm-12 col-md-12 col-lg-12 ml-3 p-0">
                         <form class="col s12" method="post" action="#">
                             <h4>A FAIRE</h4>
+                            <ul id="sortable">
                             <?php require("assets/php/contenu.php");
                             echo $html1 ?>
-                            <input type="submit" name="fin" value="Enregistrer">
+                            </ul>
+                            <button class="btn waves-effect waves-light" type="submit" name="fin">Enregistrer</button>
                         </form>
                     </div>
                 </div>
@@ -88,7 +101,12 @@ if(isset($_POST['tache'])) {
     </main>
     <!--JavaScript at end of body for optimized loading-->
     <script type="text/javascript" src="assets/materialize/js/materialize.min.js"></script>
-    <script type="text/javascript" src="assets/js/script.js"></script>
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script>$( function() {
+    $( "#sortable" ).sortable();
+    $( "#sortable" ).disableSelection();
+  } );</script>
 </body>
 
 </html>
